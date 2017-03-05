@@ -95,7 +95,7 @@ for row_annonces in reader_annonces: # lecture des annonces
 #print(liste_annonces)
 
 for service in liste_services: # redaction du dico/JSON
-    #print(service)
+    #print(service[4])
     for annonce in liste_annonces:
         #print(annonce)
         if service[4] == annonce[17]: # match            
@@ -122,26 +122,29 @@ for service in liste_services: # redaction du dico/JSON
             l += 9 # augmentation intervalle fin 9 en 9
             #print(l)
             categorie_intermediaire.append(annonce_intermediaire[k:l+1])
+            #print(annonce_intermediaire[k:l+1])
             j += 1 # augmentation intervalle fin 1 en 1
             #print(j)
             k = l + 1 # augmentation intervalle debut
             #print(k)
             change = True # ajout
-            #print(categorie_intermediaire)
+        #print(categorie_intermediaire)
     if change: # si ajout
         dico_data[service[4]] = categorie_intermediaire[i:j+1]
+        #print(categorie_intermediaire[i:j+1])
         i = j + 1 # augmentation intervalle debut
         #print(i)
         change = False # reinitialisation
+
 #print(dico_data)
 
 #json_data = json.dumps(dico_data) # JSON
 #print(json_data)
 
 client = pymongo.MongoClient('212.194.0.132',27117)
-#print(client)
+print(client)
 db = client.test_database
-#print(db)
+print(db)
 post_id = db.annonces.insert_one(dico_data).inserted_id
 #print(post_id)
 client.close()
