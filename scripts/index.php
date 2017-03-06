@@ -8,15 +8,27 @@
 		<link href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" rel="stylesheet">
 		<!-- CSS -->
 		<style>
-			#title { text-align: center; }
-			#mapid { margin-left: 70px; margin-right: 70px; height: 300px; }
+			#menu{
+				float: left; 
+				margin-right: 70px;
+				width: 150px;
+			}
+			#mapid { 
+				height: 300px;
+			}
+			#main {
+				margin-left: 70px; 
+				margin-right: 70px;
+			}
 		</style>
 	</head>
 	<!-- BODY -->
 	<body>
-		<h1 id="title">Petites annonces</h1>
-		
+		<center><h1>Petites annonces</h1></center>
+		<div id="main">
+		<div id="menu"><center><h2>Menu</h2></center></div>
 		<div id="mapid"></div>
+		</div>
 		<!-- JAVASCRIPT -->
 		<script type="text/javascript">
 			var mymap = L.map('mapid').setView([46.62, 2.39], 4);
@@ -28,5 +40,11 @@
 				id: 'mapbox.streets'
 			}).addTo(mymap);
 		</script>
+		<!-- PHP -->
+		<?php
+			#phpinfo();
+			#$con = new Mongo(212.194.0.132:27117); # raspi1
+			$con = new Mongo(); # localhost:27017
+		?>
 	</body>
 </html>
