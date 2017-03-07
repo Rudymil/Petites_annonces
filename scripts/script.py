@@ -144,10 +144,10 @@ for service in liste_services: # redaction du dico/JSON
 #client = pymongo.MongoClient('212.194.0.132',27117) # raspi1
 client = pymongo.MongoClient('127.0.0.1',27017) # localhost
 print(client)
-db = client.services
+db = client.services # database
 print(db)
 result = db.annonces.delete_many({})
 print("Suppression ", result)
-post_id = db.annonces.insert_one(dico_data).inserted_id
+post_id = db.annonces.insert_one(dico_data).inserted_id # collection : annonces
 print("Identifiant ", post_id)
 client.close()

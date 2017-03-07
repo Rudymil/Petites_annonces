@@ -9,7 +9,7 @@
 		<!-- CSS -->
 		<style>
 			#menu{
-				float: left; 
+				float: left; /* horizontal */
 				margin-right: 70px;
 				width: 150px;
 			}
@@ -42,9 +42,19 @@
 		</script>
 		<!-- PHP -->
 		<?php
-			#phpinfo();
-			#$con = new Mongo(212.194.0.132:27117); # raspi1
-			$con = new Mongo(); # localhost:27017
+			//$con = new MongoDB\Driver\Manager("mongodb://212.194.0.132:27117"); # raspi1
+			$con = new MongoDB\Driver\Manager("mongodb://localhost:27017"); # localhost:27017
+			$dbname_collection = 'services.annonces';
+			$query = new \MongoDB\Driver\Query( // Create query object with all options:
+			        [], // query (empty: select all)
+			        [ 'sort' => [ 'name' => 1 ], 'limit' => 40 ] // options
+			);
+			$cursor = $con->executeQuery( $dbname_collection, $query ); // Execute query and obtain cursor:
+			foreach ( $cursor as $id => $value )
+			{
+				echo "$id: ";
+				var_dump( $value );
+			}
 		?>
 	</body>
 </html>
