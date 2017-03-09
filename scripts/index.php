@@ -9,14 +9,14 @@
 		<!-- CSS -->
 		<style>
 			#menu{
-				float:left; /* horizontal */
+				float: left; /* horizontal */
 				margin-right: 70px;
 				width: 200px;
 			}
 			#mapid {
 				height: 400px;
 			    width: 700px;
-			    float:left; /* horizontal */
+			    float: left; /* horizontal */
 			}
 			#main {
 				margin-left: 70px; 
@@ -24,29 +24,26 @@
 			}
 			#description{
 				margin-left: 70px;
-				float:left; /* horizontal */
+				float: left; /* horizontal */
 			}
 			#apercue{
 				margin-left: 270px;
-				margin-right: 70px;
 			    width: 700px;
-			}
-			.bouton {
-				width: 200px;
-			}
-			#apercue {
 			    border-collapse: collapse;
 				margin-right: 70px;
-			    margin-top: 450px;
+			    margin-top: 425px;
 			}
 			td, th {
 			    border: 1px solid black;
+			}
+			.bouton {
+				width: 200px;
 			}
 		</style>
 	</head>
 	<!-- BODY -->
 	<body>
-		<!-- PHP -->
+		<!-- PHP connexion -->
 		<?php
 			//$con = new MongoDB\Driver\Manager("mongodb://212.194.0.132:27117"); # raspi1
 			$con = new MongoDB\Driver\Manager("mongodb://localhost:27017"); # localhost:27017
@@ -68,21 +65,22 @@
 		<div id="main">
 			<div id="menu">
 				<center><h2>Menu</h2></center>
-				<!-- PHP -->
+				<!-- PHP menu -->
 				<?php
 					$services = array();
-					foreach($tableau as $key => $val){ // pour chaque id de tableau
+					foreach ($tableau as $key => $val) { // pour chaque id de tableau
 				        //echo $key;
 				        //var_dump( $val );
-				        foreach($val as $key => $val){ // pour chaque service d un id
+				        foreach ($val as $key => $val) { // pour chaque service d un id
 					        if ($key == '_id'){ // si on a a faire avec le champs _id
+					        	continue;
 					        }
-					        elseif (array_key_exists($key, $services)){ // si services contient deja la clef
+					        elseif (array_key_exists($key, $services)) { // si services contient deja la clef
 					        	//array_push($services[$key], $val); // on ajoute la valeur a la clef
 					        }
 					        else {
 								$services[$key] = $val; // on ajoute la clef et la valeur
-								echo "<center><input class='bouton' type='button' value='$key'></center>"; // on cree le bouton
+								echo "<center><input class='bouton' type='button' value='$key' onclick='javascript:afficher(this.getAttribute(\"value\"));'></center>"; // on cree le bouton
 					        }
 					    }
 					}
@@ -94,8 +92,8 @@
 				<!-- HTML -->
 			</div>
 			<div id="mapid"></div>
+			<center><h3>Description</h3></center>
 			<div id="description">
-				<center><h3>Description</h3></center>
 			</div>
 		</div>
 		<table id="apercue">
@@ -108,7 +106,7 @@
 				<th id="libelle">libelle</th>
 			</tr>
 		</table>
-		<!-- JAVASCRIPT -->
+		<!-- JAVASCRIPT carte -->
 		<script type="text/javascript">
 			var mymap = L.map('mapid').setView([46.62, 2.39], 5);
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -118,6 +116,23 @@
 					'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 				id: 'mapbox.streets'
 			}).addTo(mymap);
+		</script>
+		<!-- JAVASCRIPT fonctions -->
+		<script type="text/javascript">
+			var services = <?php echo json_encode($services); ?>; // tableau des services => annonces
+			//console.log(services); // verification !!!
+			function afficher(service_choisie){
+				console.log("service choisie : "+service_choisie);
+				console.log(services[service_choisie]);
+				for (var annonce in services[service_choisie]) {
+					console.log("annonce numero : "+annonce);
+					for (var champs in services[service_choisie][annonce]) {
+						console.log("champs numero : "+champs);
+						console.log("champs : "+services[service_choisie][annonce][champs]);
+    					//document.getElementById("apercue").innerHTML = services[service_choisie][annonce][champs];
+    				}
+				}
+			}
 		</script>
 	</body>
 </html>
