@@ -9,12 +9,14 @@
 		<!-- CSS -->
 		<style>
 			#menu{
-				float: left; /* horizontal */
+				float:left; /* horizontal */
 				margin-right: 70px;
 				width: 200px;
 			}
 			#mapid {
 				height: 400px;
+			    width: 700px;
+			    float:left; /* horizontal */
 			}
 			#main {
 				margin-left: 70px; 
@@ -22,14 +24,23 @@
 			}
 			#description{
 				margin-left: 70px;
-				float: right; /* horizontal */
+				float:left; /* horizontal */
 			}
 			#apercue{
 				margin-left: 270px;
 				margin-right: 70px;
+			    width: 700px;
 			}
 			.bouton {
 				width: 200px;
+			}
+			#apercue {
+			    border-collapse: collapse;
+				margin-right: 70px;
+			    margin-top: 450px;
+			}
+			td, th {
+			    border: 1px solid black;
 			}
 		</style>
 	</head>
@@ -46,49 +57,57 @@
 			);
 			$cursor = $con->executeQuery( $dbname_collection, $query ); // Execute query and obtain cursor:
 			$tableau = array();
-			$services = array();
-			$occ = 0;
-			foreach ( $cursor as $id => $value ) {
+			foreach ( $cursor as $key => $val) {
 				//echo "$id: ";
 				//var_dump( $value );
-				$tableau[$occ] = $value;
-				$occ ++;
+				$tableau[$key] = $val;
 			}
 		?>
 		<!-- HTML -->
 		<center><h1>Petites annonces</h1></center>
 		<div id="main">
-		<div id="menu">
-		<center><h2>Menu</h2></center>
-		<!-- PHP -->
-		<?php
-			$occ = 0;
-			foreach($tableau as $key => $val){
-		        //echo $key;
-		        //var_dump( $val );
-		        foreach($val as $key => $val){
-			        if ($key == '_id' || in_array($key, $services)) {
-			        	continue;
-			        }
-			        $services[$occ] = $key;
-			        $occ ++;
-			        echo "<center><input class='bouton' type='button' value='$key'></center>";
-			    }
-			}
-			/*foreach($tableau as $row){
-			    foreach($row as $key => $val){
-			        echo $key;
-			        var_dump( $val );
-					echo '<br>';
-			    }
-			}*/
-		?>
-		<!-- HTML -->
+			<div id="menu">
+				<center><h2>Menu</h2></center>
+				<!-- PHP -->
+				<?php
+					$services = array();
+					foreach($tableau as $key => $val){ // pour chaque id de tableau
+				        //echo $key;
+				        //var_dump( $val );
+				        foreach($val as $key => $val){ // pour chaque service d un id
+					        if ($key == '_id'){ // si on a a faire avec le champs _id
+					        }
+					        elseif (array_key_exists($key, $services)){ // si services contient deja la clef
+					        	//array_push($services[$key], $val); // on ajoute la valeur a la clef
+					        }
+					        else {
+								$services[$key] = $val; // on ajoute la clef et la valeur
+								echo "<center><input class='bouton' type='button' value='$key'></center>"; // on cree le bouton
+					        }
+					    }
+					}
+					/*foreach($services as $key => $val){ // verification !!!
+						echo $key;
+						var_dump( $val );
+					}*/
+				?>
+				<!-- HTML -->
+			</div>
+			<div id="mapid"></div>
+			<div id="description">
+				<center><h3>Description</h3></center>
+			</div>
 		</div>
-		<div id="mapid"></div>
-		<div id="description">blablabla</div>
-		</div>
-		<table id="apercue"><tr id="entete="><td id="id">id</td><td id="pseudo">pseudo</td><td id="titre">titre</td><td id="tarif">tarif</td><td id="date">date</td><td id="libelle"></td>libelle</tr></table>
+		<table id="apercue">
+			<tr id="entete=">
+				<th id="id">id</th>
+				<th id="pseudo">pseudo</th>
+				<th id="titre">titre</th>
+				<th id="tarif">tarif</th>
+				<th id="date">date</th>
+				<th id="libelle">libelle</th>
+			</tr>
+		</table>
 		<!-- JAVASCRIPT -->
 		<script type="text/javascript">
 			var mymap = L.map('mapid').setView([46.62, 2.39], 5);
