@@ -17,21 +17,25 @@
 				height: 400px;
 			    width: 700px;
 			    float: left; /* horizontal */
+			    margin-bottom: 70px;
 			}
 			#main {
 				margin-left: 70px; 
 				margin-right: 70px;
 			}
 			#description{
-				margin-left: 70px;
-				float: left; /* horizontal */
+				margin-left: 1020px;
+				text-align: justify;
 			}
-			#apercue{
-				margin-left: 270px;
-			    width: 700px;
+			#tableau{
+				margin-left: 340px;
 			    border-collapse: collapse;
 				margin-right: 70px;
-			    margin-top: 425px;
+			    margin-top: auto;
+			}
+			#apercue{
+			    width: 700px;
+			    text-align: center;
 			}
 			td, th {
 			    border: 1px solid black;
@@ -80,7 +84,7 @@
 					        }
 					        else {
 								$services[$key] = $val; // on ajoute la clef et la valeur
-								echo "<center><input class='bouton' type='button' value='$key' onclick='javascript:afficher(this.getAttribute(\"value\"));'></center>"; // on cree le bouton
+								echo "<center><input class='bouton' type='button' value='$key' onclick='javascript:afficher_ligne(this.getAttribute(\"value\"));'></center>"; // on cree le bouton
 					        }
 					    }
 					}
@@ -96,16 +100,18 @@
 			<div id="description">
 			</div>
 		</div>
-		<table id="apercue">
-			<tr id="entete=">
-				<th id="id">id</th>
-				<th id="pseudo">pseudo</th>
-				<th id="titre">titre</th>
-				<th id="tarif">tarif</th>
-				<th id="date">date</th>
-				<th id="libelle">libelle</th>
-			</tr>
-		</table>
+		<div id="tableau">
+			<table id="apercue">
+				<!--tr id="entete">
+					<th id="id">id</th>
+					<th id="pseudo">pseudo</th>
+					<th id="titre">titre</th>
+					<th id="tarif">tarif</th>
+					<th id="date">date</th>
+					<th id="libelle">libelle</th>
+				</tr-->
+			</table>
+		</div>
 		<!-- JAVASCRIPT carte -->
 		<script type="text/javascript">
 			var mymap = L.map('mapid').setView([46.62, 2.39], 5);
@@ -120,17 +126,42 @@
 		<!-- JAVASCRIPT fonctions -->
 		<script type="text/javascript">
 			var services = <?php echo json_encode($services); ?>; // tableau des services => annonces
+			var service_actuel;
+			var marker = new Array();
 			//console.log(services); // verification !!!
-			function afficher(service_choisie){
-				console.log("service choisie : "+service_choisie);
-				console.log(services[service_choisie]);
-				for (var annonce in services[service_choisie]) {
-					console.log("annonce numero : "+annonce);
-					for (var champs in services[service_choisie][annonce]) {
-						console.log("champs numero : "+champs);
-						console.log("champs : "+services[service_choisie][annonce][champs]);
-    					//document.getElementById("apercue").innerHTML = services[service_choisie][annonce][champs];
-    				}
+			function afficher_ligne(service_choisi){
+				//console.log("service choisie : "+service_choisi);
+				//console.log(services[service_choisi]);
+				service_actuel = service_choisi;
+				mymap.setView([46.62, 2.39], 5);
+				var occ = 0; // occurence du tableau des markers
+				if (marker != null){ // si y a des markers
+					for(occ = 0; occ < marker.length ; occ++) {
+					    mymap.removeLayer(marker[occ]); // on enleve tous les markers
+					}
+					marker = []; // on vide les markers
+					occ = 0;
+				}
+				document.getElementById("description").innerHTML = ""; // vidange
+				document.getElementById("tableau").innerHTML = '<table id="apercue"><tr id="entete"><th id="id">id</th><th id="pseudo">pseudo</th><th id="titre">titre</th><th id="tarif">tarif</th><th id="date">date</th><th id="libelle">libelle</th></tr></table>'; // rajout de l entete
+				for (var annonce in services[service_choisi]) {
+					//console.log("annonce numero : "+annonce);
+					//console.log(services[service_choisi][annonce][3]);
+					document.getElementById("apercue").insertAdjacentHTML('beforeend', '<tr id='+services[service_choisi][annonce][0]+' class="ligne" onclick="javascript:afficher_descrition(this.getAttribute(\'value\'));"><td class="id">'+services[service_choisi][annonce][0]+'</td><td class="pseudo">'+services[service_choisi][annonce][1]+'</td><td class="titre">'+services[service_choisi][annonce][2]+'</td><td class="tarif">'+services[service_choisi][annonce][4]+'</td><td class="date">'+services[service_choisi][annonce][5]+'</td><td class="libelle">'+services[service_choisi][annonce][8]+'</td></tr>'); // insertion de la ligne
+					//console.log(services[service_choisi][annonce][0]);
+					document.getElementById(services[service_choisi][annonce][0]).setAttribute('value', services[service_choisi][annonce][3]); // attribution de la valeur en fonction de l identifiant
+					marker.push(L.marker([services[service_choisi][annonce][6], services[service_choisi][annonce][7]]).bindTooltip(services[service_choisi][annonce][8], {permanent: false, className: "my-label", offset: [0, -10], direction: 'top', interactive:true})); // creation d un marker
+					mymap.addLayer(marker[occ]); // ajout de la couche marker
+					occ ++;
+				}
+			}
+			function afficher_descrition(description){
+				//console.log(description);
+				document.getElementById("description").innerHTML = description; // ajout de la description
+				for (var annonce in services[service_actuel]) {
+					if (services[service_actuel][annonce][3] == description){ // si la description correspond
+						mymap.setView([services[service_actuel][annonce][6], services[service_actuel][annonce][7]], 12); // display
+					}
 				}
 			}
 		</script>
