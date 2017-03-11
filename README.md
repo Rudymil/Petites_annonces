@@ -1,4 +1,4 @@
-﻿# Petites annonces
+# Petites annonces
 ## Projet Bases de Données avancées 2017
 Le but du projet est d'afficher les détails d'annonces en ligne de manière ordonnée et cartographique et de les manipuler au travers d'une base de données Mongodb.
 ### Traitement python
@@ -60,10 +60,21 @@ La page web est donc constituée d'un menu proposant les catégories, d'une inte
 
 ![1.jpg](img/1.jpg)
 
-La page web nous propose de choisir une catégorie. Ce choix affichera toutes les annonces de cette catégorie plus son endroit sur la carte :
+La page web nous propose de choisir une catégorie. Ce choix affichera toutes les annonces de cette catégorie plus leur endroit sur la carte :
 
 ![2.jpg](img/2.jpg)
 
 Ensuite, un simple clic sur une annonce permet de zoomer sur son emplacement géographique et d'afficher sa description.
 
 ![3.jpg](img/3.jpg)
+
+### Bibliographie
+
+* [Language Processing and Python](http://www.nltk.org/book/ch01.html)
+* [Guide de démarrage pour utiliser MongoDb](https://openclassrooms.com/courses/guide-de-demarrage-pour-utiliser-mongodb)
+* [Installer MongoDB sur sa Raspberry Pi](https://raspbian-france.fr/installer-mongodb-raspberry-pi/)
+* [Leafletjs](http://leafletjs.com/index.html)
+* [MongoDB driver](http://php.net/mongodb)
+* [Natural Language Toolkit](http://www.nltk.org/)
+* [New MongoDB Drivers for PHP and HHVM: Cursor Behaviour](https://derickrethans.nl/new-drivers-part3-cursor.html)
+* [Tutorial pymongo](http://api.mongodb.com/python/current/tutorial.html)
