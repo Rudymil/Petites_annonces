@@ -42,9 +42,9 @@ annonce = [id,pseudo,titre,description,tarif,date,lat,long,libelle]
 ```
 ```
 {
-  catégorie_1:[[annonce_1],...,[annonce_n]],
+  catégorie_1:[[annonce_1.1],...,[annonce_1.n]],
   ...,
-  catégorie_n:[[annonce_1],...,[annonce_n]]
+  catégorie_n:[[annonce_n.1],...,[annonce_n.n]]
 }
 ```
 Ce dictionnaire ou JSON, est stocké dans la base de données **services** sous le nom **annonces**.
