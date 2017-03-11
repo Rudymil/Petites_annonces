@@ -158,9 +158,14 @@
 			function afficher_descrition(description){
 				//console.log(description);
 				document.getElementById("description").innerHTML = description; // ajout de la description
+				var elements = document.getElementsByClassName("ligne");
+				for (var i = 0; i < elements.length; i++) { // pour chaque ligne du tableau
+					elements[i].style.backgroundColor= "#ffffff"; // surbrillance blanche
+				}
 				for (var annonce in services[service_actuel]) {
 					if (services[service_actuel][annonce][3] == description){ // si la description correspond
 						mymap.setView([services[service_actuel][annonce][6], services[service_actuel][annonce][7]], 12); // display
+						document.getElementById(services[service_actuel][annonce][0]).style.backgroundColor = "#f6ff00"; // surbrillance jaune
 					}
 				}
 			}
