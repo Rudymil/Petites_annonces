@@ -40,7 +40,7 @@ Une fois les annonces associées à une sous-catégorie, on créé un autre dict
 ```python
 annonce = [id,pseudo,titre,description,tarif,date,lat,long,libelle]
 ```
-```json
+```python
 {
   catégorie_1:[[annonce_1.1],...,[annonce_1.n]],
   ...,
