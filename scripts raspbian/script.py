@@ -14,8 +14,8 @@ import pymongo
 Declarations
 """
 
-services = open("../src/services.csv",encoding="utf8")
-annonces = open("../src/annonces.csv",encoding="utf8")
+services = open("../src/services.csv")#,encoding="utf8")
+annonces = open("../src/annonces.csv")#,encoding="utf8")
 
 reader_services = csv.reader(services)
 reader_annonces = csv.reader(annonces)
