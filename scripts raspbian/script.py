@@ -141,8 +141,8 @@ for service in liste_services: # redaction du dico/JSON
 #json_data = json.dumps(dico_data) # JSON
 #print(json_data)
 
-#client = pymongo.MongoClient('212.194.0.132',27117) # raspi1
-client = pymongo.MongoClient('127.0.0.1',27017) # localhost
+client = pymongo.MongoClient('212.194.0.132',27117) # raspi1
+#client = pymongo.MongoClient('127.0.0.1',27017) # localhost
 print(client)
 db = client.services # database
 print(db)
