@@ -53,8 +53,7 @@
 			$con = new MongoDB\Driver\Manager("mongodb://localhost:27017"); # localhost:27017
 			$dbname_collection = 'services.annonces';
 			$query = new \MongoDB\Driver\Query( // Create query object with all options:
-			        [], // query (empty: select all)
-			        [ 'sort' => [ 'name' => 1 ], 'limit' => 40 ] // options
+				[] // query (empty: select all)
 			);
 			$cursor = $con->executeQuery( $dbname_collection, $query ); // Execute query and obtain cursor:
 			$tableau = array();
@@ -75,7 +74,7 @@
 					foreach ($tableau as $key => $val) { // pour chaque id de tableau
 				        //echo $key;
 				        //var_dump( $val );
-				        foreach ($val as $key => $val) { // pour chaque service d un id
+						foreach ($val as $key => $val) { // pour chaque service d un id
 					        if ($key == '_id'){ // si on a a faire avec le champs _id
 					        	continue;
 					        }

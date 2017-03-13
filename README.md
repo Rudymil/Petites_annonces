@@ -49,8 +49,8 @@ annonce = [id,pseudo,titre,description,tarif,date,lat,long,libelle]
 ```
 Ce dictionnaire ou JSON, est stocké dans la base de données **services** sous le nom **annonces**.
 ### Affichage web
-#### Prérequis
-L'interprétation du fichier .php nécessite l'extension **MongoDB PHP Driver on Windows**.
+#### Prérequis Windows
+L'interprétation du fichier .php sur Windows nécessite l'extension **MongoDB PHP Driver on Windows**.
 Il faut rajouter dans le fichier **php.ini** la ligne ```extension=php_mongodb.dll``` au bon endroit et placer le bon fichier (téléchargeable d'ici [mongodb](http://pecl.php.net/package/mongodb)) à cette endroit : ```bin\php\phpX.XX.XX\ext```
 #### Rendu
 On interroge la même base de données Mongodb **services** pour récupérer le document **annonces** et le stocker dans la variable ```$tableau```.
