@@ -53,9 +53,7 @@
 			$con = new MongoClient("mongodb://localhost:27017"); # localhost:27017
 			$dbname = $con->selectDB('services');
 			$collection = new MongoCollection($dbname, 'annonces');
-			$query = array( // Create query object with all options:
-				[] // query (empty: select all)
-			);
+			$query = array(); // query (empty: select all)
 			$cursor = $collection->find( $query ); // Execute query and obtain cursor:
 			$tableau = array();
 			foreach ( $cursor as $key => $val) {
