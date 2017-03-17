@@ -9,6 +9,24 @@ import csv
 import nltk
 import pymongo
 #import json
+import itertools
+
+# My Simple implementation of Levenshtein distance
+def levenshtein_distance(string1, string2):
+    """
+    >>> levenshtein_distance('AATZ', 'AAAZ')
+    1
+    >>> levenshtein_distance('AATZZZ', 'AAAZ')
+    3
+    """
+    distance = 0
+    if len(string1) < len(string2):
+        string1, string2 = string2, string1
+    for i, v in itertools.zip_longest(string1, string2, fillvalue='-'):
+        if i != v:
+            distance += 1
+    return distance
+# from http://stackoverflow.com/questions/4173579/implementing-levenshtein-distance-in-python
 
 """
 Declarations
@@ -46,9 +64,9 @@ Algorithms
 
 for row_services in reader_services: # lecture des services
     #print(row_services)
-    ligne_services = ";".join(row_services)
+    ligne_services = ";".join(row_services) # concatenation
     #print(ligne_services)
-    tableau_services = ligne_services.split(";")
+    tableau_services = ligne_services.split(";") # split
     #print(tableau_services)
     liste_services.append(tableau_services)
 
@@ -61,30 +79,55 @@ for row_annonces in reader_annonces: # lecture des annonces
     tableau_annonces = ligne_annonces.split(";")
     #print(tableau_annonces)
     #print("['"+tableau_annonces[0]+"', '"+tableau_annonces[2]+"', '"+tableau_annonces[6]+"', '"+tableau_annonces[12]+"', '"+tableau_annonces[13]+"', '"+tableau_annonces[14]+"']")
-    counter_titre = nltk.FreqDist(tableau_annonces[6].split(" "))
+    counter_titre = nltk.FreqDist(tableau_annonces[6].split(" ")) # compte le nombre d occurence de chaque mot
     #print(counter_titre)
     liste_titre.append(counter_titre)
     #print(liste_titre)
-    counter_description = nltk.FreqDist(tableau_annonces[7].split(" "))
+    counter_description = nltk.FreqDist(tableau_annonces[7].split(" ")) # compte le nombre d occurence de chaque mot
     #print(counter_description)
     liste_description.append(counter_description)
     #print(liste_description)
     occ = 0 # nombre occurence du mot
-    for cle in dico_services.keys():
+    for cle in dico_services.keys(): # pour chaque key du dictionnaire
         #print(cle)
         #print(occ)
-        if cle in tableau_annonces[6] or cle in tableau_annonces[7]:
-            #print(cle)
-            if counter_titre[cle] + counter_description[cle] > occ:
+        if cle in tableau_annonces[6] or cle in tableau_annonces[7]: # si la key est dans le titre ou la description
+            #print(cle)l
+            if counter_titre[cle] + counter_description[cle] > occ: # si l occurence de la key est la plus elevee
                 #print(counter_titre[cle] + counter_description[cle])
-                occ = counter_titre[cle] + counter_description[cle]
+                occ = counter_titre[cle] + counter_description[cle] # MAJ occurence
                 #print(occ)
                 if len(tableau_annonces) == 17: # si pas de categorie
-                    tableau_annonces.append(dico_services.get(cle))
+                    tableau_annonces.append(dico_services.get(cle)) # rentre le service
                     #print(dico_services.get(cle))
                 elif len(tableau_annonces) == 18 and dico_services.get(cle) != "Autres cours": # si deja une categorie
-                    tableau_annonces[17] = dico_services.get(cle)
+                    tableau_annonces[17] = dico_services.get(cle) # rentre le service
                     #print(dico_services.get(cle))
+        else : # si la key n est pas dans le titre ou la description
+            for word in tableau_annonces[6]: # pour chaque mot du titre
+                if levenshtein_distance(cle, word) < 3: # distance de levenshtein
+                    if counter_titre[cle] > occ: # si l occurence de la key est la plus elevee
+                        #print(counter_titre[cle])
+                        occ = counter_titre[cle] # MAJ occurence
+                        #print(occ)
+                        if len(tableau_annonces) == 17: # si pas de categorie
+                            tableau_annonces.append(dico_services.get(cle)) # rentre le service
+                            #print(dico_services.get(cle))
+                        elif len(tableau_annonces) == 18 and dico_services.get(cle) != "Autres cours": # si deja une categorie
+                            tableau_annonces[17] = dico_services.get(cle) # rentre le service
+                            #print(dico_services.get(cle))
+            for word in tableau_annonces[7]: # pour chaque mot de la description
+                if levenshtein_distance(cle, word) < 3: # distance de levenshtein
+                    if counter_description[cle] > occ: # si l occurence de la key est la plus elevee
+                        #print(counter_description[cle])
+                        occ = counter_description[cle] # MAJ occurence
+                        #print(occ)
+                        if len(tableau_annonces) == 17: # si pas de categorie
+                            tableau_annonces.append(dico_services.get(cle)) # rentre le service
+                            #print(dico_services.get(cle))
+                        elif len(tableau_annonces) == 18 and dico_services.get(cle) != "Autres cours": # si deja une categorie
+                            tableau_annonces[17] = dico_services.get(cle) # rentre le service
+                            #print(dico_services.get(cle))
     if len(tableau_annonces) == 17: # si pas de categorie
         tableau_annonces.append('null') # pas de categorie
     liste_annonces.append(tableau_annonces)
